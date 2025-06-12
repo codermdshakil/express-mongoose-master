@@ -10,7 +10,7 @@ const person = {
 
 const fruits = ['Apple', 'Banana', 'Orange'];
 
-const sum = (n1, n2) => n1 + n2;
+const sum = (n1, n2, n3) => n1 + n2 + n3;
 
 module.exports = {person, a, sum, fruits};
 
