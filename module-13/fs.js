@@ -67,14 +67,14 @@ const fs = require("fs");
 
 // create file in folder
 
-// fs.writeFile('./Folder/file-1.txt', "Hello Bhai Paiso?", {encoding:'utf8'}, (err) => {
-//   if(err){
-//     console.log("Error Occured", err);
-//   }
-//   else{
-//     console.log('File created!');
-//   }
-// })
+fs.writeFile('./Folder/file-1.txt', "Hello Bhai Paiso?", {encoding:'utf8'}, (err) => {
+  if(err){
+    console.log("Error Occured", err);
+  }
+  else{
+    console.log('File created!');
+  }
+})
 
 // append new data in file 
 
