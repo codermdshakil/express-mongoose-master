@@ -15,3 +15,44 @@ const fs = require("fs");
 //   })
  
 // })
+
+
+const readStream = fs.createReadStream("./hello-word.txt", {encoding:"utf8"});
+const writeStream = fs.createWriteStream("./hello.txt", {encoding:"utf8"});
+
+readStream.on('data', (data) => {
+  writeStream.write(data, (err) => {
+    if(err){
+      console.log('Error Occured', err.message);
+    }
+    console.log("Data write successfully!");
+  })
+})
+
+
+readStream.on("error", (err) => {
+   if(err){
+      console.log('Error Occured', err.message);
+    }
+})
+
+writeStream.on("error", (err) => {
+   if(err){
+      console.log('Error Occured', err.message);
+    }
+})
+
+
+readStream.on('end', () =>{
+  console.log('Read Stream Ended!');
+  writeStream.end();
+
+})
+
+writeStream.on('finish', () =>{
+  console.log('Write SuccessFully Done!');
+})
+
+
+
+
