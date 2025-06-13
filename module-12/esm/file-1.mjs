@@ -22,3 +22,26 @@ console.log(utilis.mul(5, 20));
 
 // file - 4
 myName();
+
+// ## Summary
+
+// - how web works
+// - frontend, backend
+// - Static site, Dynamic
+// - client , server
+// - JS Engine
+// - Node JS runtime = V8 Engine + Libuv
+// - Differents between JS and Node JS
+// - Event Loop
+// - Single thread
+// - Threat pool
+// - Non Blocking I/O
+// - Asynchronous
+// - Node JS modular system
+// - commonjs
+//     - require
+//     - export / module.exports
+// - esm module
+//     - import
+//     - export default
+//     - .mjs
