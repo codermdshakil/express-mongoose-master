@@ -33,3 +33,17 @@ schoolBell.on('nur', () =>{
 
 schoolBell.emit('ring');
 
+// give all listeners in a array
+
+// console.log(schoolBell.listeners("ring"));
+// console.log(schoolBell.listenerCount("ring")); // 2
+
+schoolBell.once('start', () =>{
+  console.log('matha nostha event start is runing..');
+})
+
+schoolBell.emit('start');
+schoolBell.emit('start');
+
+
+
