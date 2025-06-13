@@ -43,7 +43,16 @@ schoolBell.once('start', () =>{
 })
 
 schoolBell.emit('start');
-schoolBell.emit('start');
+// schoolBell.emit('start'); X
 
 
+// ## Summary 
 
+// | Concept           | Method                  | Purpose                     |
+// | ----------------- | ----------------------- | --------------------------- |
+// | Register listener | `.on()`                 | Run every time event occurs |
+// | One-time listener | `.once()`               | Run only once               |
+// | Trigger event     | `.emit()`               | Fire the event              |
+// | Remove listener   | `.off()`                | Stop listening              |
+// | Get count         | `.listenerCount()`      | Know how many are listening |
+// | Clear all         | `.removeAllListeners()` | Clean everything            |
