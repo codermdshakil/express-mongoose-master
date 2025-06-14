@@ -45,7 +45,7 @@ const server = http.createServer((req, res) => {
       parseDatas.push(todo);
 
       // 3. ✅ Write updated todos to file (FIXED)
-      fs.writeFileSync(filePath, JSON.stringify(parseDatas), {
+      fs.writeFileSync(filePath, JSON.stringify(parseDatas, null, 2), {
         encoding: "utf8",
       });
 
@@ -53,7 +53,7 @@ const server = http.createServer((req, res) => {
       res.writeHead(201, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ message: "Todo created successfully!" }));
     });
-
+    
   } else {
     res.end("Enter valid url and method");
   }
