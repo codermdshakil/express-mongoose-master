@@ -21,52 +21,10 @@
     "isHired": true
   },
   {
-    "id": 4,
-    "name": "Diana Rose",
-    "age": 500,
-    "dob": "1994-03-11",
-    "isHired": false
-  },
-  {
     "id": 5,
     "name": "Ethan Brown",
     "age": 26,
     "dob": "1998-07-04",
     "isHired": true
-  },
-  {
-    "id": 6,
-    "name": "Fiona Clark",
-    "age": 27,
-    "dob": "1997-03-18",
-    "isHired": false
-  },
-  {
-    "id": 7,
-    "name": "Fiona Clark",
-    "age": 27,
-    "dob": "1997-03-18",
-    "isHired": false
-  },
-  {
-    "id": 4,
-    "name": "Diana Rose",
-    "age": 1000,
-    "dob": "1994-03-11",
-    "isHired": false
-  },
-  {
-    "id": 4,
-    "name": "Diana Rose",
-    "age": 1000,
-    "dob": "1994-03-11",
-    "isHired": false
-  },
-  {
-    "id": 4,
-    "name": "Diana Rose",
-    "age": 500,
-    "dob": "1994-03-11",
-    "isHired": false
   }
 ]

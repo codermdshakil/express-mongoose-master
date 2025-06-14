@@ -57,7 +57,9 @@ const server = http.createServer((req, res) => {
       res.writeHead(201, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ message: "Todo created successfully!" }));
     });
-  } else if (pathName === "/todo" && req.method === "GET") {
+  }
+  // find a todo
+  else if (pathName === "/todo" && req.method === "GET") {
     const name = url.searchParams.get("name");
     const allTodos = fs.readFileSync(filePath, { encoding: "utf8" });
     const allTodosData = JSON.parse(allTodos);
@@ -65,7 +67,10 @@ const server = http.createServer((req, res) => {
 
     res.writeHead(201, { "Content-Type": "application/json" });
     res.end(JSON.stringify(findedTodo));
-  } else if (pathName === "/todos/update-todo" && req.method === "PATCH") {
+  }
+
+  // update a todo
+  else if (pathName === "/todos/update-todo" && req.method === "PATCH") {
     let data = "";
 
     req.on("data", (chunk) => {
@@ -91,7 +96,6 @@ const server = http.createServer((req, res) => {
       // update todos array with updated todo
       allTodosData.push(findedTodo);
 
-
       // 3. ✅ Write updated todos to file (FIXED)
       fs.writeFileSync(filePath, JSON.stringify(allTodosData, null, 2), {
         encoding: "utf8",
@@ -101,6 +105,32 @@ const server = http.createServer((req, res) => {
       res.writeHead(201, { "Content-Type": "application/json" });
       res.end(JSON.stringify(findedTodo));
     });
+  }
+
+  // delete todo
+  else if (pathName === "/todos/delete-todo" && req.method === "DELETE") {
+
+    const name = url.searchParams.get("name");
+
+    // get all todos
+    const allTodos = fs.readFileSync(filePath, { encoding: "utf8" });
+    // all todos datas
+    const allTodosData = JSON.parse(allTodos);
+
+    // finded name matched data
+    const filteredTodo = allTodosData.filter((todo) => todo.name !== name);
+
+  
+
+    // 3. ✅ Write updated todos to file without deleted Todo
+    fs.writeFileSync(filePath, JSON.stringify(filteredTodo, null, 2), {
+      encoding: "utf8",
+    });
+
+    // // 4. Response after writing
+    res.writeHead(201, { "Content-Type": "application/json" });
+    
+    res.end(`${name} named todo deleted successfully!`);
 
   } else {
     res.end("Enter valid url and method");
