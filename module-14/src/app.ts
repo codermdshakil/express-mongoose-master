@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import fs from "fs";
 import handleRootRoute from "./handlers/handleRootRoute";
+import handleTodosRoute from "./handlers/handleTodosRoutes";
 
 const app: Application = express();
 
@@ -14,10 +15,12 @@ const todosRouter = express.Router();
 app.use('/', todosRouter);
 app.use('/todos', todosRouter);
 
+
 // todosRouter.get('/', handleRootRoute);
 todosRouter.get('/', handleRootRoute);
 
 // handle todos route
+todosRouter.get('/todos', handleTodosRoute)
 
 
 

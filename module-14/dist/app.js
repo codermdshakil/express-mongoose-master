@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const fs_1 = __importDefault(require("fs"));
 const handleRootRoute_1 = __importDefault(require("./handlers/handleRootRoute"));
+const handleTodosRoutes_1 = __importDefault(require("./handlers/handleTodosRoutes"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 // create app router 
@@ -16,6 +17,7 @@ app.use('/todos', todosRouter);
 // todosRouter.get('/', handleRootRoute);
 todosRouter.get('/', handleRootRoute_1.default);
 // handle todos route
+todosRouter.get('/todos', handleTodosRoutes_1.default);
 todosRouter.get("/todos/:id/:id2/:id3", (req, res) => {
     // console.log(req.params);
     // console.log(req.query); //
