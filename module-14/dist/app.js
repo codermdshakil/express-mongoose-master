@@ -8,7 +8,6 @@ const fs_1 = __importDefault(require("fs"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.get("/", (req, res) => {
-    console.log({ req, res });
     res.send("Today I Learning Express JS with TypeScript !");
 });
 app.get("/todos", (req, res) => {
@@ -17,7 +16,23 @@ app.get("/todos", (req, res) => {
     res.send(data);
 });
 app.post("/todos/create-todo", (req, res) => {
-    res.send("Get all todos!");
+    // 1: get request data
+    const reqData = req.body;
+    try {
+        // 2. get all data
+        const filePath = "./db/todo.json";
+        const allStrTodos = fs_1.default.readFileSync(filePath, { encoding: "utf8" });
+        const parsedTodos = JSON.parse(allStrTodos);
+        // 3 push reqData in all todos
+        parsedTodos.push(reqData);
+        // update with all new todos 
+        fs_1.default.writeFileSync(filePath, JSON.stringify(parsedTodos, null, 2), 'utf8');
+    }
+    catch (err) {
+        console.error('Error:', err);
+        res.status(500).json({ message: 'Failed to write to file' });
+    }
+    res.send("Post a new Todo!");
 });
 exports.default = app;
 /**
