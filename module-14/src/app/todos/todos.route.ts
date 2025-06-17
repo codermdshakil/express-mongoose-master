@@ -1,21 +1,22 @@
-
 import express from "express";
 import handleCreateTodo from "../../handlers/handleCreateTodo";
+import handleDeleteTodo from "../../handlers/handleDeleteTodo";
 import handleTodosRoute from "../../handlers/handleGetTodos";
 import handleUpdateTodo from "../../handlers/handleUpdateTodo";
 
 
 const todosRouter = express.Router();
 
-
 // get all todos
-todosRouter.get('/', handleTodosRoute);
+todosRouter.get("/", handleTodosRoute);
 
 // create a new todo
-todosRouter.post('/create-todo', handleCreateTodo);
+todosRouter.post("/create-todo", handleCreateTodo);
 
 // update a todo
-todosRouter.patch("/:id", handleUpdateTodo)
+todosRouter.patch("/:id", handleUpdateTodo);
 
+// delete a todo
+todosRouter.delete("/:id", handleDeleteTodo);
 
 export default todosRouter;
