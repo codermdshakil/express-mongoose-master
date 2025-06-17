@@ -26,8 +26,8 @@
   },
   {
     "id": 6,
-    "title": "Express",
-    "description": "Practice writing complex queries with GROUP BY and HAVING."
+    "title": "SQL",
+    "description": "Write queries using JOINs and subqueries."
   },
   {
     "id": 7,
