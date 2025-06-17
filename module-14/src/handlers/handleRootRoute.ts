@@ -1,7 +1,15 @@
 import { Request, Response } from "express";
+import fs from 'fs';
 
+
+ 
 const handleRootRoute = (req:Request, res:Response) => {
-  res.send("Today I learning Express JS")
+
+  const filePath = "./db/todo.json";
+
+  const data = fs.readFileSync(filePath, {encoding:"utf8"});
+  res.send(data);
+
 }
 
 export default handleRootRoute;
