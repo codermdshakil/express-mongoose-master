@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "title": "JavaScript",
+    "description": "Learn DOM manipulation and event handling."
+  },
+  {
+    "id": 2,
+    "title": "Python",
+    "description": "Practice file I/O and exception handling."
+  },
+  {
+    "id": 3,
+    "title": "C++",
+    "description": "Implement data structures like stack and queue."
+  },
+  {
+    "id": 4,
+    "title": "Java",
+    "description": "Understand object-oriented programming concepts."
+  },
+  {
+    "id": 5,
+    "title": "SQL",
+    "description": "Write queries using JOINs and subqueries."
+  }
+]
