@@ -10,12 +10,16 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Today I Learning Express JS with TypeScript !");
 });
 
-app.get("/todos", (req: Request, res: Response) => {
+app.get("/todos/:id/:id2/:id3", (req: Request, res: Response) => {
 
+  console.log(req.params);
+  console.log(req.query); //
 
   const filePath = "./db/todo.json";
   const data = fs.readFileSync(filePath, { encoding: "utf8" });
-  res.send(data);
+  // res.send(data);
+  res.send("Todos!")
+
 });
 
 app.post("/todos/create-todo", (req: Request, res: Response) => {
@@ -40,7 +44,7 @@ app.post("/todos/create-todo", (req: Request, res: Response) => {
     console.error('Error:', err);
     res.status(500).json({ message: 'Failed to write to file' });
   }
-  
+
   res.send("Post a new Todo!");
 
 });

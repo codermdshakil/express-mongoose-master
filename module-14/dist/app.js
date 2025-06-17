@@ -10,10 +10,13 @@ app.use(express_1.default.json());
 app.get("/", (req, res) => {
     res.send("Today I Learning Express JS with TypeScript !");
 });
-app.get("/todos", (req, res) => {
+app.get("/todos/:id/:id2/:id3", (req, res) => {
+    console.log(req.params);
+    console.log(req.query); //
     const filePath = "./db/todo.json";
     const data = fs_1.default.readFileSync(filePath, { encoding: "utf8" });
-    res.send(data);
+    // res.send(data);
+    res.send("Todos!");
 });
 app.post("/todos/create-todo", (req, res) => {
     // 1: get request data
