@@ -6,7 +6,6 @@ const app: Application = express();
 app.use(express.json());
 
 
-
 // give permission that specific route to use todosRouter
 app.use('/todos', todosRouter);
 
