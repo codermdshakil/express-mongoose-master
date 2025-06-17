@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const handleRootRoute_1 = __importDefault(require("../../handlers/handleRootRoute"));
-const app = (0, express_1.default)();
-app.use(express_1.default.json());
+const handleCreateTodo_1 = __importDefault(require("../../handlers/handleCreateTodo"));
+const handleGetTodos_1 = __importDefault(require("../../handlers/handleGetTodos"));
 const todosRouter = express_1.default.Router();
-// root route show all todos
-todosRouter.get('/', handleRootRoute_1.default);
+todosRouter.get('/', handleGetTodos_1.default);
+todosRouter.post('/create-todo', handleCreateTodo_1.default);
+exports.default = todosRouter;

@@ -1,14 +1,14 @@
 
-import express, { Application } from "express";
-import handleRootRoute from "../../handlers/handleRootRoute";
-
-const app :Application = express();
-
-app.use(express.json());
+import express from "express";
+import handleCreateTodo from "../../handlers/handleCreateTodo";
+import handleTodosRoute from "../../handlers/handleGetTodos";
 
 const todosRouter = express.Router();
 
-// root route show all todos
-todosRouter.get('/', handleRootRoute);
+
+todosRouter.get('/', handleTodosRoute);
+
+todosRouter.post('/create-todo', handleCreateTodo );
 
 
+export default todosRouter;

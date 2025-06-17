@@ -1,69 +1,23 @@
-import express, { Application, Request, Response } from "express";
-import fs from "fs";
-import handleRootRoute from "./handlers/handleRootRoute";
-import handleTodosRoute from "./handlers/handleTodosRoutes";
+import express, { Application } from "express";
+import todosRouter from "./app/todos/todos.route";
 
 const app: Application = express();
 
 app.use(express.json());
 
 
-// create app router 
-const todosRouter = express.Router();
 
 // give permission that specific route to use todosRouter
-app.use('/', todosRouter);
 app.use('/todos', todosRouter);
 
 
-// todosRouter.get('/', handleRootRoute);
-todosRouter.get('/', handleRootRoute);
 
-// handle todos route
-todosRouter.get('/todos', handleTodosRoute)
-
-
+ 
+app.get('/', (req, res) => {
+  res.send("Root Home Page")
+})
 
 
-
-todosRouter.get("/todos/:id/:id2/:id3", (req: Request, res: Response) => {
-
-  // console.log(req.params);
-  // console.log(req.query); //
-
-  const filePath = "./db/todo.json";
-  const data = fs.readFileSync(filePath, { encoding: "utf8" });
-  // res.send(data);
-  res.send("Todos!")
-
-});
-
-todosRouter.post("/todos/create-todo", (req: Request, res: Response) => {
-  // 1: get request data
-  const reqData = req.body;
-  try{
-    
-  // 2. get all data
-  const filePath = "./db/todo.json";
-
-  const allStrTodos = fs.readFileSync(filePath, { encoding: "utf8" });
-  const parsedTodos = JSON.parse(allStrTodos);
-
-  // 3 push reqData in all todos
-  parsedTodos.push(reqData);
-
-  // update with all new todos 
-  fs.writeFileSync(filePath, JSON.stringify(parsedTodos, null, 2), 'utf8');
-
-  }
-  catch (err) {
-    console.error('Error:', err);
-    res.status(500).json({ message: 'Failed to write to file' });
-  }
-
-  res.send("Post a new Todo!");
-
-});
 
 export default app;
 
