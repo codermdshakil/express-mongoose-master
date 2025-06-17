@@ -1,19 +1,32 @@
 import express, { Application, Request, Response } from "express";
 import fs from "fs";
+import handleRootRoute from "./handlers/handleRootRoute";
 
 const app: Application = express();
 
 app.use(express.json());
 
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Today I Learning Express JS with TypeScript !");
-});
+// create app router 
+const todosRouter = express.Router();
 
-app.get("/todos/:id/:id2/:id3", (req: Request, res: Response) => {
+// give permission that specific route to use todosRouter
+app.use('/', todosRouter);
+app.use('/todos', todosRouter);
 
-  console.log(req.params);
-  console.log(req.query); //
+// todosRouter.get('/', handleRootRoute);
+todosRouter.get('/', handleRootRoute);
+
+// handle todos route
+
+
+
+
+
+todosRouter.get("/todos/:id/:id2/:id3", (req: Request, res: Response) => {
+
+  // console.log(req.params);
+  // console.log(req.query); //
 
   const filePath = "./db/todo.json";
   const data = fs.readFileSync(filePath, { encoding: "utf8" });
@@ -22,7 +35,7 @@ app.get("/todos/:id/:id2/:id3", (req: Request, res: Response) => {
 
 });
 
-app.post("/todos/create-todo", (req: Request, res: Response) => {
+todosRouter.post("/todos/create-todo", (req: Request, res: Response) => {
   // 1: get request data
   const reqData = req.body;
   try{

@@ -5,20 +5,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const fs_1 = __importDefault(require("fs"));
+const handleRootRoute_1 = __importDefault(require("./handlers/handleRootRoute"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.get("/", (req, res) => {
-    res.send("Today I Learning Express JS with TypeScript !");
-});
-app.get("/todos/:id/:id2/:id3", (req, res) => {
-    console.log(req.params);
-    console.log(req.query); //
+// create app router 
+const todosRouter = express_1.default.Router();
+// give permission that specific route to use todosRouter
+app.use('/', todosRouter);
+app.use('/todos', todosRouter);
+// todosRouter.get('/', handleRootRoute);
+todosRouter.get('/', handleRootRoute_1.default);
+// handle todos route
+todosRouter.get("/todos/:id/:id2/:id3", (req, res) => {
+    // console.log(req.params);
+    // console.log(req.query); //
     const filePath = "./db/todo.json";
     const data = fs_1.default.readFileSync(filePath, { encoding: "utf8" });
     // res.send(data);
     res.send("Todos!");
 });
-app.post("/todos/create-todo", (req, res) => {
+todosRouter.post("/todos/create-todo", (req, res) => {
     // 1: get request data
     const reqData = req.body;
     try {
