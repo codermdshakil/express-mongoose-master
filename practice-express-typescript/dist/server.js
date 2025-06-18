@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require("mongodb");
 let server;
 const port = 5000;
 const uri = "mongodb+srv://mongodb:mongodb@cluster0.qo2wzoe.mongodb.net/todosDB?retryWrites=true&w=majority&appName=Cluster0";
@@ -23,11 +23,19 @@ const client = new MongoClient(uri, {
         version: ServerApiVersion.v1,
         strict: true,
         deprecationErrors: true,
-    }
+    },
 });
 const bootstrap = () => __awaiter(void 0, void 0, void 0, function* () {
     yield client.connect();
     console.log("successfully connected to MongoDB!");
+    // get Database
+    const db = yield client.db("todosDB");
+    // get collection
+    const collection = yield db.collection("todos").insertOne({
+        title: "MongoDB",
+        des: "This is mongodb",
+    });
+    console.log(collection);
     server = app_1.default.listen(port, () => {
         console.log("Server is listening on port ", port);
     });
