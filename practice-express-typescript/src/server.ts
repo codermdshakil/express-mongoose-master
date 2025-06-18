@@ -1,0 +1,13 @@
+import app from "./app";
+
+let server;
+
+const port = 5000;
+
+const bootstrap = () => {
+  server = app.listen(port, () => {
+    console.log("Server is listening on port ", port);
+  })
+}
+
+bootstrap();
