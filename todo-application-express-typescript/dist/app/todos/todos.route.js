@@ -17,9 +17,13 @@ const mongodb_1 = require("../../config/mongodb");
 const app = (0, express_1.default)();
 const todosRouter = express_1.default.Router();
 // home route
-todosRouter.get("/", (req, res) => {
-    res.send("Todos home route");
-});
+todosRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const db = yield mongodb_1.client.db("todosDB");
+    const collection = yield db.collection('todos');
+    const cursor = collection.find({});
+    const todos = yield cursor.toArray();
+    res.json(todos);
+}));
 // create todo route
 todosRouter.post("/create-todo", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, description, priority, isComplete } = req.body;

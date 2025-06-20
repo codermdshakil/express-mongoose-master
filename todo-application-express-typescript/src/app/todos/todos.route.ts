@@ -8,8 +8,18 @@ const todosRouter = express.Router();
 
 
 // home route
-todosRouter.get("/", (req: Request, res: Response) => {
-  res.send("Todos home route");
+todosRouter.get("/",  async (req: Request, res: Response) => {
+
+  const db = await client.db("todosDB");
+  const collection = await db.collection('todos');
+
+  const cursor = collection.find({});
+  const todos = await cursor.toArray();
+
+
+  res.json(todos);
+
+
 });
 
 // create todo route
