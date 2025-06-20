@@ -57,6 +57,7 @@ todosRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function
     // send response single todo
     res.json(singleTodo);
 }));
+// update todo
 todosRouter.patch("/update-todo/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { title, description } = req.body;
