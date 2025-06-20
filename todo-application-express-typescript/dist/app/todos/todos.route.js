@@ -60,14 +60,17 @@ todosRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function
 // update todo
 todosRouter.patch("/update-todo/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { title, description } = req.body;
+    const { title, description, priority, isComplete } = req.body;
     const db = yield mongodb_2.client.db("todosDB");
     const collection = yield db.collection("todos");
     const updatedData = {
         title,
         description,
+        priority,
+        isComplete
     };
-    const result = yield collection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: updatedData });
+    const filter = { _id: new mongodb_1.ObjectId(id) };
+    const result = yield collection.updateOne(filter, { $set: updatedData });
     if (result.modifiedCount > 0) {
         res.status(201).send(`${title} todo updated successfully!`);
     }

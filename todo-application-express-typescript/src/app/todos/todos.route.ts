@@ -63,7 +63,7 @@ todosRouter.get("/:id", async (req: Request, res: Response) => {
 // update todo
 todosRouter.patch("/update-todo/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { title, description } = req.body;
+  const { title, description, priority, isComplete } = req.body;
 
   const db = await client.db("todosDB");
   const collection = await db.collection("todos");
@@ -71,11 +71,15 @@ todosRouter.patch("/update-todo/:id", async (req: Request, res: Response) => {
   const updatedData = {
     title,
     description,
+    priority,
+    isComplete
   };
 
+  const filter = {_id:new ObjectId(id)};
+
   const result = await collection.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: updatedData }
+    filter,
+    { $set: updatedData},
   );
 
   if (result.modifiedCount > 0) {
