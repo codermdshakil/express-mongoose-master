@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from "express";
+import { ObjectId } from "mongodb";
 import { client } from "../../config/mongodb";
 
 const app: Application = express();
@@ -46,24 +47,40 @@ todosRouter.post("/create-todo", async (req: Request, res: Response) => {
 
 // get single todo
 todosRouter.get("/:id", async (req: Request, res: Response) => {
-
   // get single todo id from param
   const id = req.params.id;
 
-  
   const db = await client.db("todosDB");
   const collection = await db.collection("todos");
 
-  // get all todos
-  const cursor = collection.find({});
-  const todos = await cursor.toArray();
-
-  // find single todo using id
-  const findedTodo = todos.find((todo) => todo._id.toString() == id);
+  // get single todo using id
+  const singleTodo = await collection.findOne({ _id: new ObjectId(id) });
 
   // send response single todo
-  res.json(findedTodo);
-
+  res.json(singleTodo);
 });
 
+todosRouter.patch("/update-todo/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { title, description } = req.body;
+
+  const db = await client.db("todosDB");
+  const collection = await db.collection("todos");
+
+  
+  const updatedData = {
+    title,
+    description 
+  }
+
+  const result = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: updatedData }
+  );
+
+  if(result.modifiedCount > 0){
+    res.status(201).send(`${title} todo updated successfully!`)
+  }
+
+})
 export default todosRouter;
