@@ -61,7 +61,7 @@ todosRouter.get("/:id", async (req: Request, res: Response) => {
 });
 
 // update todo
-todosRouter.patch("/update-todo/:id", async (req: Request, res: Response) => {
+todosRouter.put("/update-todo/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const { title, description, priority, isComplete } = req.body;
 
@@ -80,6 +80,7 @@ todosRouter.patch("/update-todo/:id", async (req: Request, res: Response) => {
   const result = await collection.updateOne(
     filter,
     { $set: updatedData},
+    {upsert:true} // Creates a new document if no documents match the filter
   );
 
   if (result.modifiedCount > 0) {
