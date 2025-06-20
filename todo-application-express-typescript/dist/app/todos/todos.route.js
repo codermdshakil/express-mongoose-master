@@ -17,9 +17,10 @@ const mongodb_1 = require("../../config/mongodb");
 const app = (0, express_1.default)();
 const todosRouter = express_1.default.Router();
 // home route
+// get all todos
 todosRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const db = yield mongodb_1.client.db("todosDB");
-    const collection = yield db.collection('todos');
+    const collection = yield db.collection("todos");
     const cursor = collection.find({});
     const todos = yield cursor.toArray();
     res.json(todos);
@@ -30,7 +31,7 @@ todosRouter.post("/create-todo", (req, res) => __awaiter(void 0, void 0, void 0,
     // title - string
     // description - string
     // priority - "High", "Medium", "Low"
-    // isComplete - true, false 
+    // isComplete - true, false
     const db = yield mongodb_1.client.db("todosDB");
     const collection = yield db.collection("todos");
     // create a new todo
@@ -38,10 +39,24 @@ todosRouter.post("/create-todo", (req, res) => __awaiter(void 0, void 0, void 0,
         title: title,
         description: description,
         priority: priority,
-        isComplete: isComplete
+        isComplete: isComplete,
     });
     const cursor = collection.find({});
     const todos = yield cursor.toArray();
     res.json(todos);
+}));
+// get single todo
+todosRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // get single todo id from param
+    const id = req.params.id;
+    const db = yield mongodb_1.client.db("todosDB");
+    const collection = yield db.collection("todos");
+    // get all todos
+    const cursor = collection.find({});
+    const todos = yield cursor.toArray();
+    // find single todo using id
+    const findedTodo = todos.find((todo) => todo._id.toString() == id);
+    // send response single todo
+    res.json(findedTodo);
 }));
 exports.default = todosRouter;
