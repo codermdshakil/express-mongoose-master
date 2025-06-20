@@ -8,7 +8,10 @@ const todos_route_1 = __importDefault(require("./app/todos/todos.route"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json()); // middleware to parse the request body as JSON
 app.use("/todos", todos_route_1.default);
-app.get("/", (req, res) => {
+app.get("/", (req, res, next) => {
+    console.log("I am custom middleware");
+    next();
+}, (req, res, next) => {
     res.send("Hello world");
 });
 exports.default = app;
