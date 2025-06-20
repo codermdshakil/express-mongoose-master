@@ -65,11 +65,21 @@ todosRouter.patch("/update-todo/:id", (req, res) => __awaiter(void 0, void 0, vo
     const collection = yield db.collection("todos");
     const updatedData = {
         title,
-        description
+        description,
     };
     const result = yield collection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: updatedData });
     if (result.modifiedCount > 0) {
         res.status(201).send(`${title} todo updated successfully!`);
+    }
+}));
+// detele todo
+todosRouter.delete("/delete-todo/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const db = yield mongodb_2.client.db("todosDB");
+    const collection = yield db.collection("todos");
+    const result = yield collection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+    if (result.deletedCount > 0) {
+        res.status(200).send(`${id} deleted successfully!`);
     }
 }));
 exports.default = todosRouter;

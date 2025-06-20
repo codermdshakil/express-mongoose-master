@@ -60,7 +60,6 @@ todosRouter.get("/:id", async (req: Request, res: Response) => {
   res.json(singleTodo);
 });
 
-
 // update todo
 todosRouter.patch("/update-todo/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -69,20 +68,33 @@ todosRouter.patch("/update-todo/:id", async (req: Request, res: Response) => {
   const db = await client.db("todosDB");
   const collection = await db.collection("todos");
 
-
   const updatedData = {
     title,
-    description 
-  }
+    description,
+  };
 
   const result = await collection.updateOne(
     { _id: new ObjectId(id) },
     { $set: updatedData }
   );
 
-  if(result.modifiedCount > 0){
-    res.status(201).send(`${title} todo updated successfully!`)
+  if (result.modifiedCount > 0) {
+    res.status(201).send(`${title} todo updated successfully!`);
   }
+});
 
-})
+// detele todo
+todosRouter.delete("/delete-todo/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const db = await client.db("todosDB");
+  const collection = await db.collection("todos");
+
+  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+
+  if (result.deletedCount > 0) {
+    res.status(200).send(`${id} deleted successfully!`);
+  }
+});
+
 export default todosRouter;
