@@ -11,12 +11,21 @@ app.use("/todos", todosRouter);
 
 
 app.get("/", (req : Request, res:Response, next: NextFunction) => {
-  
+
   console.log("I am custom middleware");
   next();
 
 }, (req : Request, res:Response, next: NextFunction) => {
-  res.send("Hello world")
+
+  // handle custom error 
+  try {
+    // console.log(something);
+    res.send("Welcome to todos App")
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({message:"someting want wrong!"})
+  }
 })
 
 

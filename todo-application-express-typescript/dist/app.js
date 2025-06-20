@@ -12,6 +12,14 @@ app.get("/", (req, res, next) => {
     console.log("I am custom middleware");
     next();
 }, (req, res, next) => {
-    res.send("Hello world");
+    // handle custom error 
+    try {
+        // console.log(something);
+        res.send("Welcome to todos App");
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "someting want wrong!" });
+    }
 });
 exports.default = app;
