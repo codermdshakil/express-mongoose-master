@@ -1,20 +1,15 @@
-import express, { Application, Request, Response } from "express";
 
-const app : Application = express();
+import express, { Request, Response } from "express";
 
 const todosRouter = express.Router();
 
- 
-
-todosRouter.get("/", (req :Request, res:Response) => {
-  res.send("Hello world todos router")
+todosRouter.get("/", (req :Request, res:Response) =>{
+  res.send("Todos Home")
 });
 
-todosRouter.get("/health", (req :Request, res:Response) => {
-  res.send("OK todos router")
+todosRouter.get("/health", (req :Request, res:Response) =>{
+  res.send("Todos health")
 });
- 
-
 
 export default todosRouter;
 
