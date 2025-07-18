@@ -65,6 +65,25 @@ app.post("/todos/create-todo", (req, res) => {
         res.send(`Successfully ${data.title} named todo created!`);
     });
 });
+app.put('/todos/update-todo/:id', (req, res) => {
+    // get id to find todo
+    const id = req.params.id;
+    // requested data 
+    const todo = req.body;
+    const alltodos = fs_1.default.readFileSync(filePath, { encoding: "utf-8" });
+    const todos = JSON.parse(alltodos);
+    const findedItem = todos.find((item) => item.id === parseInt(id));
+    console.log(findedItem);
+    findedItem.title = todo.title;
+    findedItem.body = todo.body;
+    fs_1.default.writeFile(filePath, JSON.stringify(todos), { encoding: "utf-8" }, (err) => {
+        if (err) {
+            console.log("Error Occured!");
+        }
+        console.log(`Successfully ${id} Updated!`);
+    });
+    res.send(todos);
+});
 app.get("/health", (req, res) => {
     res.send("OK!");
 });
