@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-import { readFileSync } from "fs";
+import fs, { readFileSync } from "fs";
 import path from "path";
 
 const app: Application = express();
@@ -22,11 +22,18 @@ app.get("/todos", (req: Request, res: Response) => {
 app.post("/todos/create-todo", (req: Request, res: Response) => {
   const data = req.body;
 
-  const todos = readFileSync(filePath, { encoding: "utf-8" });
-  
-  console.log(data);
+  // get all todo
+  const todo = readFileSync(filePath, { encoding: "utf-8" });
+  const todos = JSON.parse(todo);
 
-  res.send("Post a todo!");
+  // add new todo
+  todos.push(data);
+
+  fs.appendFile(filePath, JSON.stringify(todos), (err) => {
+    if (err) throw err;
+    res.send(`Successfully ${data.title} named todo created!`);
+  });
+
 });
 
 app.get("/health", (req: Request, res: Response) => {
