@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Learn JavaScript ES6 Features",
+    "body": "Study let, const, arrow functions, template literals, and destructuring in JavaScript."
+  },
+  {
+    "title": "Build a TypeScript Project",
+    "body": "Create a simple Node.js app using TypeScript with proper types and interfaces."
+  },
+  {
+    "title": "Integrate Prisma with PostgreSQL",
+    "body": "Set up Prisma ORM in a project and connect it to a PostgreSQL database."
+  },
+  {
+    "title": "Practice TypeScript Utility Types",
+    "body": "Explore utility types like Partial, Pick, Omit, and Record in TypeScript."
+  },
+  {
+    "title": "Write Prisma Schema",
+    "body": "Define a user and post model using Prisma schema and run migrations."
+  }
+]
