@@ -51,6 +51,21 @@ app.get("/todos", (req, res) => {
     // res.send(JSON.stringify(data))
     res.json(data);
 });
+app.get("/todos/:Id", (req, res) => {
+    // console.log("Params - ", req.params);
+    // console.log("Quries - ", req.query);
+    // const {title, body} = req.query;
+    // console.log(title);
+    // console.log(body);
+    // get id 
+    const id = parseInt(req.params.Id);
+    // get all todos
+    const data = (0, fs_1.readFileSync)(filePath, { encoding: "utf-8" });
+    const todos = JSON.parse(data);
+    // using id find todo from todos
+    const findedItem = todos.find((item) => item.id === id);
+    res.send(JSON.stringify(findedItem));
+});
 // create a new todo
 app.post("/todos/create-todo", (req, res) => {
     const data = req.body;
@@ -64,25 +79,6 @@ app.post("/todos/create-todo", (req, res) => {
             throw err;
         res.send(`Successfully ${data.title} named todo created!`);
     });
-});
-app.put('/todos/update-todo/:id', (req, res) => {
-    // get id to find todo
-    const id = req.params.id;
-    // requested data 
-    const todo = req.body;
-    const alltodos = fs_1.default.readFileSync(filePath, { encoding: "utf-8" });
-    const todos = JSON.parse(alltodos);
-    const findedItem = todos.find((item) => item.id === parseInt(id));
-    console.log(findedItem);
-    findedItem.title = todo.title;
-    findedItem.body = todo.body;
-    fs_1.default.writeFile(filePath, JSON.stringify(todos), { encoding: "utf-8" }, (err) => {
-        if (err) {
-            console.log("Error Occured!");
-        }
-        console.log(`Successfully ${id} Updated!`);
-    });
-    res.send(todos);
 });
 app.get("/health", (req, res) => {
     res.send("OK!");
