@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { readFileSync } from 'fs';
+import fs, { readFileSync } from 'fs';
 import Todo from '../interfaces/todo';
 
 const todosRouter = express.Router();
@@ -28,6 +28,27 @@ todosRouter.get('/:Id', (req : Request , res : Response) => {
 
   res.send(JSON.stringify(findedItem));
 });
+
+
+// create a new todo
+todosRouter.post("/create-todo", (req: Request, res: Response) => {
+  const data = req.body;
+  console.log(data);
+
+  // get all todo
+  const todo = readFileSync(filePath, { encoding: "utf-8" });
+  const todos = JSON.parse(todo);
+
+  // add new todo
+  todos.push(data);
+
+  fs.appendFile(filePath, JSON.stringify(todos), (err) => {
+    if (err) throw err;
+    res.send(`Successfully ${data.title} named todo created!`);
+  });
+});
+
+
 
 
 todosRouter.get('/health', (req : Request , res : Response) => {
