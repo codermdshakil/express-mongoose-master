@@ -37,7 +37,6 @@ usersRouter.post('/create-user', async (req: Request, res: Response) => {
 
 
 // get a single user
-
 usersRouter.get('/:id', async (req: Request, res: Response) => {
 
   const id = req.params.id;
@@ -50,6 +49,21 @@ usersRouter.get('/:id', async (req: Request, res: Response) => {
   res.json(data)
   
 });
+
+// delete a single user
+usersRouter.delete('/:id', async (req: Request, res: Response) => {
+
+  const id = req.params.id;
+
+  const db = await client.db("users");
+  const collection = await db.collection("user");
+
+  const data = await collection.deleteOne({_id: new ObjectId(id)});
+
+  res.json(data)
+  
+});
+
 
 
 export default usersRouter;

@@ -41,4 +41,12 @@ usersRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function
     const data = yield collection.findOne({ _id: new mongodb_1.ObjectId(id) });
     res.json(data);
 }));
+// delete a single user
+usersRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const db = yield mongoDB_1.client.db("users");
+    const collection = yield db.collection("user");
+    const data = yield collection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+    res.json(data);
+}));
 exports.default = usersRouter;
