@@ -13,9 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
+const mongodb_1 = __importDefault(require("./config/mongodb"));
 let server;
 const PORT = 5000;
 const bootstap = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield mongodb_1.default.connect();
+    console.log("MongoDB Database is Connected!!");
+    const db = yield mongodb_1.default.db("products");
+    const collection = yield db.collection("product").insertOne({
+        name: "Iphone",
+        color: "White",
+        price: "150k"
+    });
     server = app_1.default.listen(PORT, () => {
         console.log(`Server is runing on port - ${PORT}`);
     });
