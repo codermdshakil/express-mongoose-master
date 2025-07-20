@@ -12,6 +12,11 @@ app.get('/', (req : Request, res: Response) => {
 });
 
 
+app.get('/health', (req : Request, res: Response) => {
+  res.send("OK!")
+});
+
+
 export default app;
 
 

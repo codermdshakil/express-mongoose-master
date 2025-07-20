@@ -11,4 +11,7 @@ app.use("/users", users_route_1.default);
 app.get('/', (req, res) => {
     res.send("Hello world");
 });
+app.get('/health', (req, res) => {
+    res.send("OK!");
+});
 exports.default = app;
