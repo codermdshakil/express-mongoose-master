@@ -39,32 +39,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const fs_1 = __importStar(require("fs"));
 const path_1 = __importDefault(require("path"));
+const todos_route_1 = __importDefault(require("./routes/todos.route"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+// todos router
+app.use('/todos', todos_route_1.default);
 const filePath = path_1.default.join(__dirname, "../db/data.json");
 app.get("/", (req, res) => {
     res.send("Welcome to Todos App");
-});
-// get all todos
-app.get("/todos", (req, res) => {
-    const data = (0, fs_1.readFileSync)(filePath, { encoding: "utf-8" });
-    // res.send(JSON.stringify(data))
-    res.json(data);
-});
-app.get("/todos/:Id", (req, res) => {
-    // console.log("Params - ", req.params);
-    // console.log("Quries - ", req.query);
-    // const {title, body} = req.query;
-    // console.log(title);
-    // console.log(body);
-    // get id 
-    const id = parseInt(req.params.Id);
-    // get all todos
-    const data = (0, fs_1.readFileSync)(filePath, { encoding: "utf-8" });
-    const todos = JSON.parse(data);
-    // using id find todo from todos
-    const findedItem = todos.find((item) => item.id === id);
-    res.send(JSON.stringify(findedItem));
 });
 // create a new todo
 app.post("/todos/create-todo", (req, res) => {
