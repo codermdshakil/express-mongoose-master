@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const mongodb_1 = require("mongodb");
 const mongoDB_1 = require("../config/mongoDB");
 const usersRouter = express_1.default.Router();
 // get all users
@@ -24,12 +25,20 @@ usersRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     res.json(data);
 }));
 // create a new user
-usersRouter.get('/create-user', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+usersRouter.post('/create-user', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, age, email, address } = req.body;
     const db = yield mongoDB_1.client.db("users");
     const collection = yield db.collection("user");
     collection.insertOne({ name, age, email, address });
     console.log(`${name} added Successfully!`);
     res.json({ name, age, email, address });
+}));
+// get a single user
+usersRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const db = yield mongoDB_1.client.db("users");
+    const collection = yield db.collection("user");
+    const data = yield collection.findOne({ _id: new mongodb_1.ObjectId(id) });
+    res.json(data);
 }));
 exports.default = usersRouter;
