@@ -14,4 +14,24 @@ app.get('/', (req, res) => {
 app.get('/health', (req, res) => {
     res.send("OK!");
 });
+app.get('/error', (req, res, next) => {
+    try {
+        console.log("somthings");
+        res.send("Error er duniya");
+    }
+    catch (error) {
+        next(error);
+    }
+});
+// 404 route handle
+app.use((req, res, next) => {
+    res.status(404).json("Route not found!");
+});
+// Custom global error handler
+app.use((error, req, res, next) => {
+    if (error) {
+        console.log(error);
+        res.status(400).json({ message: "Error occured from global error handler", error });
+    }
+});
 exports.default = app;
