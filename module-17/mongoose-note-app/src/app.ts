@@ -33,6 +33,25 @@ app.post("/create-note", async (req: Request, res: Response) => {
 });
 
 
+// get a Single Note using Id
+app.get('/notes/:id', (req: Request, res: Response) => {
 
+  const id = req.params.id;
+
+  Note.findById(id)
+  .then(user => {
+    if (user) {
+      console.log('Found Note:', user);
+      res.json(user)
+    } else {
+      console.log('User not found.');
+    }
+  })
+  .catch(err => {
+    console.error('Error finding user:', err);
+  });
+ 
+
+})
 
 export default app;
