@@ -10,8 +10,30 @@ app.get("/", (req: Request, res: Response) => {
 
 // create note schema
 const noteSchema = new Schema({
-  title: String,
-  content: String,
+  title:{type: String, required:true, trim:true},
+  content: {
+    type: String,
+    default:''
+  },
+  category:{
+    type:String,
+    enum:["Personal", "Work", "Study", "Other"],
+    default:"Personal"
+  },
+  pinned:{
+    type:Boolean,
+    default:false
+  },
+  tags:{
+    level:{
+      type:String,
+      required:true
+    },
+    color:{
+      type:String,
+      default:"Gray"
+    }
+  }
 });
 
 // create note model
@@ -23,7 +45,7 @@ app.get("/notes", async (req: Request, res: Response) => {
   try {
 
     const notes = await Note.find(); 
-
+    
     res.status(200).json(notes);
 
   } catch (err) {
@@ -35,11 +57,15 @@ app.get("/notes", async (req: Request, res: Response) => {
 
 // create a note
 app.post("/create-note", async (req: Request, res: Response) => {
-  const { title, content } = req.body;
+
+  const {title, content,category ,pinned, tags} = req.body;
 
   const myNote = new Note({
     title,
     content,
+    category,
+    pinned, 
+    tags
   });
 
   await myNote.save();
@@ -67,7 +93,6 @@ app.get("/notes/:id", (req: Request, res: Response) => {
     .catch((err) => {
       console.error("Error finding user:", err);
     });
-    
 });
 
 export default app;
