@@ -11,7 +11,7 @@ const main = async () => {
   try {
 
     await mongoose.connect(
-      "mongodb+srv://mongodb:mongodb@cluster0.qo2wzoe.mongodb.net/todosDB?retryWrites=true&w=majority&appName=Cluster0"
+      "mongodb+srv://mongodb:mongodb@cluster0.qo2wzoe.mongodb.net/NotesDB?retryWrites=true&w=majority&appName=Cluster0"
     );
 
     console.log("MongoDB Connected Successfully!!");
