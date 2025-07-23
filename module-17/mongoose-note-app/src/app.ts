@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-import notesRouter from "./app/note.routes";
+import notesRouter from "./app/controllers/note.routes";
 
 const app: Application = express();
 app.use(express.json());
