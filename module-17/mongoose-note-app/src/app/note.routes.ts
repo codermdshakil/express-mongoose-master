@@ -100,6 +100,7 @@ notesRouter.get("/notes/:id", (req: Request, res: Response) => {
     });
 });
 
+// update a single note
 notesRouter.patch('/update-note/:id', async (req: Request, res: Response) => {
   
   const id = req.params.id;
@@ -117,6 +118,22 @@ notesRouter.patch('/update-note/:id', async (req: Request, res: Response) => {
     note: note,
   });
 
+})
+
+// delete a note 
+notesRouter.delete('/delete-note/:id', async (req: Request, res: Response) => {
+  
+  const id = req.params.id;
+
+   
+  // const note = await Note.deleteOne({_id: id});
+  const note = await Note.findByIdAndDelete(id);
+  console.log('note', note);
+  res.status(201).json({
+    success: true,
+    message: `Note Delete successfully!`,
+    note: note,
+  });
 
 })
 
