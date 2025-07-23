@@ -100,4 +100,26 @@ notesRouter.get("/notes/:id", (req: Request, res: Response) => {
     });
 });
 
+notesRouter.patch('/update-note/:id', async (req: Request, res: Response) => {
+  
+  const id = req.params.id;
+  const body = req.body;
+
+  console.log(id);  
+  console.log('body', body);  
+
+
+  const note = await Note.findByIdAndUpdate(id, body, {new:true});
+  console.log('note', note);
+  res.status(201).json({
+    success: true,
+    message: `Note created successfully!`,
+    note: note,
+  });
+
+
+})
+
+
+
 export default notesRouter;
