@@ -111,6 +111,8 @@ notesRouter.patch('/update-note/:id', async (req: Request, res: Response) => {
 
 
   const note = await Note.findByIdAndUpdate(id, body, {new:true});
+  // const note = await Note.updateOne({_id:id}, body, {new:true});
+  // const note = await Note.findOneAndUpdate({_id:id}, body, {new:true});
   console.log('note', note);
   res.status(201).json({
     success: true,
@@ -126,8 +128,9 @@ notesRouter.delete('/delete-note/:id', async (req: Request, res: Response) => {
   const id = req.params.id;
 
    
-  // const note = await Note.deleteOne({_id: id});
   const note = await Note.findByIdAndDelete(id);
+  // const note = await Note.findOneAndDelete({_id:id});
+  // const note = await Note.deleteOne({_id: id});
   console.log('note', note);
   res.status(201).json({
     success: true,
