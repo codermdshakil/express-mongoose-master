@@ -15,6 +15,33 @@ userRoutes.post("/create-user", async (req: Request, res: Response) => {
   });
 });
 
+
+// get a single user
+userRoutes.get("/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const findedUser = await User.findById(id);
+
+  res.status(201).json({
+    message: "Successfully get User",
+    user: findedUser,
+  });
+});
+
+
+// get all user
+userRoutes.get("/", async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const allUser = await User.find();
+
+  res.status(201).json({
+    message: "Successfully get Users",
+    user: allUser,
+  });
+});
+
+
 // get a single user
 userRoutes.get("/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
