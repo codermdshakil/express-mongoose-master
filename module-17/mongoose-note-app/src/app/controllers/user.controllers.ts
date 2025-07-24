@@ -42,15 +42,16 @@ userRoutes.get("/", async (req: Request, res: Response) => {
 });
 
 
-// get a single user
-userRoutes.get("/:id", async (req: Request, res: Response) => {
+// update a single user
+userRoutes.put("/update-user/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
+  const body = req.body;
 
-  const findedUser = await User.findById(id);
+  const updatedUser = await User.findByIdAndUpdate(id, body, {new:true})
 
   res.status(201).json({
     message: "Successfully get User",
-    user: findedUser,
+    user: updatedUser,
   });
 });
 
