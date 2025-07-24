@@ -1,7 +1,7 @@
 export interface INotes {
   title: string;
   content: string;
-  category: string;
+  category: "Personal" | "Work" | "Study" | "Others";
   pinned: boolean;
   tags: {
     level: string;
