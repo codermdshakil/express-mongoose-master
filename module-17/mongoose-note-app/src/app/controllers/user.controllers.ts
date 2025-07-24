@@ -50,8 +50,20 @@ userRoutes.put("/update-user/:id", async (req: Request, res: Response) => {
   const updatedUser = await User.findByIdAndUpdate(id, body, {new:true})
 
   res.status(201).json({
-    message: "Successfully get User",
+    message: "Successfully Updated User",
     user: updatedUser,
+  });
+});
+
+// delete a single user
+userRoutes.delete("/delete-user/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const deletedUser = await User.findByIdAndDelete(id);
+
+  res.status(201).json({
+    message: "Successfully Deleted User",
+    user: deletedUser,
   });
 });
 
