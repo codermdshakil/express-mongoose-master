@@ -1,9 +1,10 @@
 export interface IUser {
   fistName: string;
   lastName: string;
+  age:number,
   email: string;
   password: string;
-  role: "User" | "Admin";
+  role: "USER" | "ADMIN" | "SUPERADMIN";
 }
 
 
