@@ -25,37 +25,45 @@ const userSchema = new Schema<IUser>(
     },
     email: {
       type: String,
-      unique:[true, 'Email already exist'],
-      lowercase:true,
-      required: true, 
+      unique: [true, "Email already exist"],
+      lowercase: true,
+      required: true,
       trim: true,
 
-      validate:{
-
-        validator: function(v){
-
-           return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+      validate: {
+        validator: function (v) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
         },
-        
-        message:`{VALUE} is not valid Email!`
 
-      }
-
+        message: `{VALUE} is not valid Email!`,
+      },
+    },
+    phone: {
+      type: String,
+      required: true,
+      trim: true,
+      validate: {
+        validator: function (v) {
+          return /^(?:\+88|88)?01[3-9]\d{8}$/.test(v);
+        },
+        message: "{VALUE} is Not valid Phone Number",
+      },
     },
     password: {
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
     },
     role: {
       type: String,
       required: true,
       trim: true,
-      uppercase:true,
+      uppercase: true,
       default: "USER",
       enum: {
-        values:["USER", "ADMIN", "SUPERADMIN"],
-        message:"Enum is not valid. Got {VALUE}"
+        values: ["USER", "ADMIN", "SUPERADMIN"],
+        message: "Enum is not valid. Got {VALUE}",
       },
     },
   },
