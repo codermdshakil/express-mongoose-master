@@ -29,12 +29,18 @@ const userSchema = new Schema<IUser>(
       lowercase:true,
       required: true, 
       trim: true,
+
       validate:{
+
         validator: function(v){
+
            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
         },
+        
         message:`{VALUE} is not valid Email!`
+
       }
+
     },
     password: {
       type: String,
