@@ -1,6 +1,29 @@
 import { model, Schema } from "mongoose";
 import validator from "validator";
-import { IUser } from "../interfaces/user.interface";
+import { IAddress, IUser } from "../interfaces/user.interface";
+
+const addressSchema = new Schema<IAddress>({
+  city: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  street: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  zip: {
+    type: Number,
+    required: true,
+    trim: true,
+  },
+},
+{
+  _id:false
+}
+
+);
 
 const userSchema = new Schema<IUser>(
   {
@@ -70,22 +93,8 @@ const userSchema = new Schema<IUser>(
         message: "Enum is not valid. Got {VALUE}",
       },
     },
-    address: {
-      city: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      street: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      zip: {
-        type: Number,
-        required: true,
-        trim: true,
-      },
+    address:{
+      type:addressSchema
     },
   },
   {

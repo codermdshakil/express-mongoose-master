@@ -14,6 +14,11 @@ const CreateUserZodSchema = z.object({
   phone: z.string(),
   password: z.string(),
   role: z.string().optional(), // make this field optional
+  address: z.object({
+    city: z.string(),
+    street: z.string(),
+    zip: z.number()
+  })
 });
 
 // post a User
@@ -27,11 +32,11 @@ userRoutes.post("/create-user", async (req: Request, res: Response) => {
 
     console.log(body, "Zod body");
 
-    // const user1 = await User.create(body);
+    const user1 = await User.create(body);
 
     res.status(201).json({
       message: "Successfully Created",
-      user: {},
+      user: user1,
     });
 
   } catch (error: any) {
