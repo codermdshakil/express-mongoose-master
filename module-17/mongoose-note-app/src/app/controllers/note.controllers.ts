@@ -35,7 +35,7 @@ notesRouter.post("/create-note", async (req: Request, res: Response) => {
 // get all notes
 notesRouter.get("/notes", async (req: Request, res: Response) => {
   try {
-    const notes = await Note.find();
+    const notes = await Note.find().populate('userId');
 
     res.status(200).json(notes);
   } catch (err) {
