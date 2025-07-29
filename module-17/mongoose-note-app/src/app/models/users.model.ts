@@ -1,7 +1,6 @@
 import { model, Schema } from "mongoose";
-import validator from 'validator';
+import validator from "validator";
 import { IUser } from "../interfaces/user.interface";
-
 
 const userSchema = new Schema<IUser>(
   {
@@ -41,9 +40,7 @@ const userSchema = new Schema<IUser>(
       // },
 
       // validate using package validator
-      validate:[validator.isEmail, "Email {VALUE} is not valid Email!"]
-
-
+      validate: [validator.isEmail, "Email {VALUE} is not valid Email!"],
     },
     phone: {
       type: String,
@@ -71,6 +68,23 @@ const userSchema = new Schema<IUser>(
       enum: {
         values: ["USER", "ADMIN", "SUPERADMIN"],
         message: "Enum is not valid. Got {VALUE}",
+      },
+    },
+    address: {
+      city: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      street: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      zip: {
+        type: Number,
+        required: true,
+        trim: true,
       },
     },
   },
