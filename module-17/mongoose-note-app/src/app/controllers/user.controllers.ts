@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import express, { Request, Response } from "express";
 import z from "zod";
 import { User } from "../models/users.model";
@@ -20,7 +19,8 @@ const CreateUserZodSchema = z.object({
     city: z.string(),
     street: z.string(),
     zip: z.number(),
-  }),
+  })
+  
 });
 
 // post a User
@@ -40,24 +40,30 @@ userRoutes.post("/create-user", async (req: Request, res: Response) => {
 
 
     // 2. create a valid user
-    const user1 = new User(zodbody);
+    const user = new User(zodbody);
 
-    // bcrypted password 
+    // 1 way - statically bcrypted password 
     
-    const salt = bcrypt.genSaltSync(10);
-    const password = await bcrypt.hash(user1.password, salt);
-    user1.password = password;
+    // const salt = bcrypt.genSaltSync(10);
+    // const password = await bcrypt.hash(user1.password, salt);
+    // user1.password = password;
+ 
 
+    // 2 way - dynamically bcrypted password using Instance methods -  Hashpassword using costom instance method
+    const updatedPassword = await user.hashPassword(user.password);
 
+    user.password = updatedPassword; 
+    console.log(user.password);
+ 
     // 3. save user to mongoDB
     // Mongoose instance method
-    await user1.save(); //
+    await user.save(); //
 
     // this is instance methods
 
     res.status(201).json({
       message: "Successfully Created",
-      user:user1,
+      user:user,
     });
 
 

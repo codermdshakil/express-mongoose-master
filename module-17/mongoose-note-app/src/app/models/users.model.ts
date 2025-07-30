@@ -1,31 +1,38 @@
-import { model, Schema } from "mongoose";
+import bcrypt from "bcryptjs";
+import { Model, model, Schema } from "mongoose";
 import validator from "validator";
-import { IAddress, IUser } from "../interfaces/user.interface";
+import {
+  IAddress,
+  IUser,
+  UserInstanceMethods,
+} from "../interfaces/user.interface";
 
-const addressSchema = new Schema<IAddress>({
-  city: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  street: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  zip: {
-    type: Number,
-    required: true,
-    trim: true,
-  },
-},
-{
-  _id:false
-}
 
+const addressSchema = new Schema<IAddress>(
+  {
+    city: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    street: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    zip: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
+  },
+  {
+    _id: false,
+  }
 );
 
-const userSchema = new Schema<IUser>(
+// IUser, Model, UserInstance
+const userSchema = new Schema<IUser, Model<IUser>, UserInstanceMethods>(
   {
     firstName: {
       type: String,
@@ -93,8 +100,8 @@ const userSchema = new Schema<IUser>(
         message: "Enum is not valid. Got {VALUE}",
       },
     },
-    address:{
-      type:addressSchema
+    address: {
+      type: addressSchema,
     },
   },
   {
@@ -102,5 +109,14 @@ const userSchema = new Schema<IUser>(
     versionKey: false,
   }
 );
+// User Custom Intance method
+userSchema.method("hashPassword", async function hashPassword(password: string) {
+  const salt = bcrypt.genSaltSync(10);
+  const updatedPassword = await bcrypt.hash(password, salt);
+
+  return updatedPassword;
+
+
+});
 
 export const User = model<IUser>("User", userSchema);

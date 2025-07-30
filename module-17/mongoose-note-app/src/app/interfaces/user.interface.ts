@@ -15,7 +15,12 @@ export interface IUser {
   phone:string,
   password: string;
   role: "USER" | "ADMIN" | "SUPERADMIN",
-  address: IAddress // here linked address interface
+  address: IAddress ;// here linked address interface
+  hashPassword(password: string): string;
+}
+
+export interface UserInstanceMethods{
+  hashPassword(password:string):string
 }
 
 
