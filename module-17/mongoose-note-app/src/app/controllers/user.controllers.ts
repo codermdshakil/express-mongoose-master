@@ -52,20 +52,17 @@ userRoutes.post("/create-user", async (req: Request, res: Response) => {
 
     // user.password = updatedPassword;
 
+    // 3. save user to mongoDB
+    // Mongoose instance method
+
+    // await user.save(); //
+
     //  ## Build in and Custom Static Methods ✅
 
     const updatedPassword2 = await User.hashPassword(zodbody.password);
     zodbody.password = updatedPassword2;
 
     const user2 = await User.create(zodbody);
- 
-    console.log(user2, 'user2');
-
-
-    // 3. save user to mongoDB
-    // Mongoose instance method
-
-    // await user.save(); //
 
     // this is instance methods
 
@@ -73,7 +70,6 @@ userRoutes.post("/create-user", async (req: Request, res: Response) => {
       message: "Successfully Created",
       user: user2,
     });
-
   } catch (error: any) {
     console.log(error);
 
