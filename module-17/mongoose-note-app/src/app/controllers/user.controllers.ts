@@ -1,6 +1,8 @@
+import bcrypt from "bcryptjs";
 import express, { Request, Response } from "express";
 import z from "zod";
 import { User } from "../models/users.model";
+
 
 const userRoutes = express.Router();
 
@@ -17,36 +19,56 @@ const CreateUserZodSchema = z.object({
   address: z.object({
     city: z.string(),
     street: z.string(),
-    zip: z.number()
-  })
+    zip: z.number(),
+  }),
 });
 
 // post a User
 userRoutes.post("/create-user", async (req: Request, res: Response) => {
-  
   try {
-
     // const zodbody = await CreateUserZodSchema.parseAsync(req.body);
 
-    const body = await CreateUserZodSchema.parseAsync(req.body);
+    // using Zod validation
+    // const body = await CreateUserZodSchema.parseAsync(req.body);
+    // const user1 = await User.create(body);
 
-    const user1 = await User.create(body);
+    // ##  intance methods
+    // const body = req.body;
+
+    // 1. zod validation
+    const zodbody = await CreateUserZodSchema.parseAsync(req.body);
+
+
+    // 2. create a valid user
+    const user1 = new User(zodbody);
+
+    // bcrypted password 
+    
+    const salt = bcrypt.genSaltSync(10);
+    const password = await bcrypt.hash(user1.password, salt);
+    user1.password = password;
+
+
+    // 3. save user to mongoDB
+    // Mongoose instance method
+    await user1.save(); //
+
+    // this is instance methods
 
     res.status(201).json({
       message: "Successfully Created",
-      user: user1,
+      user:user1,
     });
 
-  } catch (error: any) {
 
+  } catch (error: any) {
     console.log(error);
 
     res.status(400).json({
-      success:false,
+      success: false,
       message: error.message,
       error,
     });
-
   }
 });
 
