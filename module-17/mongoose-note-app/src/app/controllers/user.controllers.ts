@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import z from "zod";
 import { User } from "../models/users.model";
 
-
 const userRoutes = express.Router();
 
 // create a user zod schema
@@ -19,8 +18,7 @@ const CreateUserZodSchema = z.object({
     city: z.string(),
     street: z.string(),
     zip: z.number(),
-  })
-  
+  }),
 });
 
 // post a User
@@ -38,34 +36,43 @@ userRoutes.post("/create-user", async (req: Request, res: Response) => {
     // 1. zod validation
     const zodbody = await CreateUserZodSchema.parseAsync(req.body);
 
+    //## Build in and Instance Methods
 
     // 2. create a valid user
-    const user = new User(zodbody);
+    // const user = new User(zodbody);
 
-    // 1 way - statically bcrypted password 
-    
+    // 1 way - statically bcrypted password
+
     // const salt = bcrypt.genSaltSync(10);
     // const password = await bcrypt.hash(user1.password, salt);
     // user1.password = password;
- 
 
     // 2 way - dynamically bcrypted password using Instance methods -  Hashpassword using costom instance method
-    const updatedPassword = await user.hashPassword(user.password);
+    // const updatedPassword = await user.hashPassword(user.password);
 
-    user.password = updatedPassword; 
-    console.log(user.password);
+    // user.password = updatedPassword;
+
+    //  ## Build in and Custom Static Methods ✅
+
+    const updatedPassword2 = await User.hashPassword(zodbody.password);
+    zodbody.password = updatedPassword2;
+
+    const user2 = await User.create(zodbody);
  
+    console.log(user2, 'user2');
+
+
     // 3. save user to mongoDB
     // Mongoose instance method
-    await user.save(); //
+
+    // await user.save(); //
 
     // this is instance methods
 
     res.status(201).json({
       message: "Successfully Created",
-      user:user,
+      user: user2,
     });
-
 
   } catch (error: any) {
     console.log(error);
