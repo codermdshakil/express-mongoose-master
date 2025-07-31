@@ -132,25 +132,52 @@ userSchema.static(
   }
 );
 
-// pre save hook
+
+
+// Pre save hook
+
 // using pre save hook hash password
+
+// Document Middleware 
+
 userSchema.pre("save", async function () {
   const salt = bcrypt.genSaltSync(10);
   const updatedPassword = await bcrypt.hash(this.password, salt);
   this.password = updatedPassword;
 });
 
-// if user is deleted then userId referencing all notes delete
-userSchema.post("findOneAndDelete", async function (doc) {
-  if (doc) {
-    console.log(doc, 'from doc');
-    await Note.deleteMany({ userId: doc._id });
-  }
-});
 
+// find 
+
+// Query Middleware 
+userSchema.pre("find", function(next) {
+  console.log("inside pre find hook ");
+  next();
+})
+
+
+
+// Post save hook
 // post save hook
+
 userSchema.post("save", function () {
   console.log(`${this.email} Email user created!!`);
 });
+
+
+// Query Middleware 
+
+// if user is deleted then userId referencing all notes delete
+userSchema.post("findOneAndDelete", async function (doc, next) {
+  if (doc) {
+    console.log(doc, 'from doc');
+    await Note.deleteMany({ userId: doc._id });
+    next();
+  }
+});
+
+// All quriey middleware use next function and call it 
+
+
 
 export const User = model<IUser, UserStaticMethods>("User", userSchema);
