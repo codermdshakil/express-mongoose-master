@@ -1,17 +1,30 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import bookRouter from "./app/controllers/book.controller";
 
 const app: Application = express();
 app.use(express.json());
 
-app.use("/api", bookRouter)
+app.use("/api", bookRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello world");
 });
 
 app.get("/health", (req: Request, res: Response) => {
-  res.send("OK!")
+  res.send("OK!");
+});
+
+// 404 page error handle
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(404).json({ message: "Route not found!" });
+});
+
+// global error handler
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  if (error) {
+    console.log("Error", error);
+    res.status(400).json({ message: "Something want wrong!" });
+  }
 });
 
 export default app;

@@ -16,19 +16,29 @@ const CreateBookZodSchema = z.object({
 
 // create a book
 bookRouter.post("/books", async (req: Request, res: Response) => {
-  console.log(req.body);
+  try {
+    // validate data using zod
+    const validatedBook = await CreateBookZodSchema.parseAsync(req.body);
 
-  const validatedBook = await CreateBookZodSchema.parseAsync(req.body);
+    // save data to mongoDB
+    const data = await Book.create(validatedBook);
 
-  console.log(validatedBook, "from zod");
+    // response
+    res.status(201).json({
+      success: true,
+      message: "Book created successfully",
+      data: data,
+    });
 
-  const data = await Book.create(validatedBook);
+  } catch (error:any) {
 
-  res.status(201).json({
-    success: true,
-    message: "Book created successfully",
-    data: data,
-  });
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      error,
+    });
+    
+  }
 });
 
 export default bookRouter;
