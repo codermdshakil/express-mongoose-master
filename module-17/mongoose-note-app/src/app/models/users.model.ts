@@ -108,8 +108,12 @@ const userSchema = new Schema<IUser, UserStaticMethods, UserInstanceMethods>(
   {
     timestamps: true,
     versionKey: false,
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true},
   }
 );
+
+
 // User Custom Intance method
 userSchema.method(
   "hashPassword",
@@ -176,7 +180,12 @@ userSchema.post("findOneAndDelete", async function (doc, next) {
   }
 });
 
-// All quriey middleware use next function and call it 
+
+// using virtuals create FullName from firstName, lastName
+userSchema.virtual("fullName").get(function(){
+  return `${this.firstName} ${this.lastName}`;
+})
+
 
 
 
