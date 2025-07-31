@@ -94,13 +94,51 @@ userRoutes.get("/:id", async (req: Request, res: Response) => {
 
 // get all user
 userRoutes.get("/", async (req: Request, res: Response) => {
-  const id = req.params.id;
+  // const id = req.params.id;
+
+  const userEmail = req.query.email;
+
+  // ## Filtering
+  // if (userEmail) {
+  //   const allUser = await User.find({ email: userEmail });
+  //   res.status(201).json({
+  //     message: "Successfully get Users",
+  //     user: allUser,
+  //   });
+  // } else {
+  //   const allUser = await User.find();
+  //   res.status(201).json({
+  //     message: "Successfully get Users",
+  //     user: allUser,
+  //   });
+  // }
 
   const allUser = await User.find();
 
+  // ## Sorting
+  let users = [];
+
+  // sort assending order based on email
+  // users = await User.find().sort({ email: "asc" });
+  // users = await User.find().sort({ email: "ascending" });
+  // users = await User.find().sort({ email:1 }); // assending
+  // users = await User.find().sort({ email: "desc" });
+  // users = await User.find().sort({ email: "descending" });
+  // users = await User.find().sort({ email: -1 });
+
+  // ## Skipping
+
+  // skip(2) -> means first 2 user skip
+  // users = await User.find().skip(2);
+
+  // limit(5) -> means after first 2 user skil from user 3 to 3,4,5,6,7 user will shown
+  // users = await User.find().limit(5);
+  // users = await User.find().skip(2).limit(5);
+  users = await User.find().sort({email:"asc"}).limit(2);
+
   res.status(201).json({
     message: "Successfully get Users",
-    user: allUser,
+    user: users,
   });
 });
 
@@ -122,7 +160,7 @@ userRoutes.delete("/delete-user/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
 
   // const deletedUser = await User.findByIdAndDelete(id);
-  const deletedUser = await User.findOneAndDelete({_id:id});
+  const deletedUser = await User.findOneAndDelete({ _id: id });
 
   res.status(201).json({
     message: "Successfully Deleted User",
