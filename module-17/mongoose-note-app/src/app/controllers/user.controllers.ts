@@ -41,26 +41,25 @@ userRoutes.post("/create-user", async (req: Request, res: Response) => {
     // 2. create a valid user
     // const user = new User(zodbody);
 
-    // 1 way - statically bcrypted password
+    // 2.1 way - statically bcrypted password
 
     // const salt = bcrypt.genSaltSync(10);
     // const password = await bcrypt.hash(user1.password, salt);
     // user1.password = password;
 
-    // 2 way - dynamically bcrypted password using Instance methods -  Hashpassword using costom instance method
+    // 2.2 way - dynamically bcrypted password using Instance methods -  Hashpassword using costom instance method
+
     // const updatedPassword = await user.hashPassword(user.password);
 
     // user.password = updatedPassword;
 
     // 3. save user to mongoDB
-    // Mongoose instance method
-
     // await user.save(); //
 
     //  ## Build in and Custom Static Methods ✅
 
-    const updatedPassword2 = await User.hashPassword(zodbody.password);
-    zodbody.password = updatedPassword2;
+    // const updatedPassword2 = await User.hashPassword(zodbody.password);
+    // zodbody.password = updatedPassword2;
 
     const user2 = await User.create(zodbody);
 
@@ -122,7 +121,8 @@ userRoutes.put("/update-user/:id", async (req: Request, res: Response) => {
 userRoutes.delete("/delete-user/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
 
-  const deletedUser = await User.findByIdAndDelete(id);
+  // const deletedUser = await User.findByIdAndDelete(id);
+  const deletedUser = await User.findOneAndDelete({_id:id});
 
   res.status(201).json({
     message: "Successfully Deleted User",

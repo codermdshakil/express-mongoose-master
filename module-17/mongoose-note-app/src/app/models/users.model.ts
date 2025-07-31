@@ -5,9 +5,9 @@ import {
   IAddress,
   IUser,
   UserInstanceMethods,
-  UserStaticMethods
+  UserStaticMethods,
 } from "../interfaces/user.interface";
-
+import { Note } from "./notes.model";
 
 const addressSchema = new Schema<IAddress>(
   {
@@ -111,21 +111,46 @@ const userSchema = new Schema<IUser, UserStaticMethods, UserInstanceMethods>(
   }
 );
 // User Custom Intance method
-userSchema.method("hashPassword", async function hashPassword(password: string) {
-  const salt = bcrypt.genSaltSync(10);
-  const updatedPassword = await bcrypt.hash(password, salt);
+userSchema.method(
+  "hashPassword",
+  async function hashPassword(password: string) {
+    const salt = bcrypt.genSaltSync(10);
+    const updatedPassword = await bcrypt.hash(password, salt);
 
-  return updatedPassword;
-});
+    return updatedPassword;
+  }
+);
 
 // Custom Static method
 
-userSchema.static("hashPassword", async function hashPassword(password:string){
+userSchema.static(
+  "hashPassword",
+  async function hashPassword(password: string) {
+    const salt = bcrypt.genSaltSync(10);
+    const updatedPassword = await bcrypt.hash(password, salt);
+    return updatedPassword;
+  }
+);
 
+// pre save hook
+// using pre save hook hash password
+userSchema.pre("save", async function () {
   const salt = bcrypt.genSaltSync(10);
-  const updatedPassword = await bcrypt.hash(password, salt);
-  return updatedPassword;
+  const updatedPassword = await bcrypt.hash(this.password, salt);
+  this.password = updatedPassword;
+});
 
-})
+// if user is deleted then userId referencing all notes delete
+userSchema.post("findOneAndDelete", async function (doc) {
+  if (doc) {
+    console.log(doc, 'from doc');
+    await Note.deleteMany({ userId: doc._id });
+  }
+});
+
+// post save hook
+userSchema.post("save", function () {
+  console.log(`${this.email} Email user created!!`);
+});
 
 export const User = model<IUser, UserStaticMethods>("User", userSchema);
