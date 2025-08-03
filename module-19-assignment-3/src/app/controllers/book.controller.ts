@@ -42,7 +42,6 @@ bookRouter.post("/books", async (req: Request, res: Response) => {
 });
 
 // 2. get all books
-
 bookRouter.get("/books", async (req: Request, res: Response) => {
   
   //get query values
