@@ -42,6 +42,8 @@ bookRouter.post("/books", async (req: Request, res: Response) => {
 
 // 2. get all books
 
+
+
 // 3. get book by id
 bookRouter.get("/books/:bookId", async (req: Request, res: Response) => {
   const bookId = req.params.bookId;
@@ -83,6 +85,35 @@ bookRouter.patch("/books/:bookId", async (req: Request, res: Response) => {
       success: true,
       message: "Book updated successfully",
       data: updatedBook,
+    });
+
+  } catch (error: any) {
+  
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      error,
+    });
+  }
+});
+
+// 4. delete book by its id
+bookRouter.delete("/books/:bookId", async (req: Request, res: Response) => {
+  
+
+  // get book id
+  const bookId = req.params.bookId;
+
+  try {
+
+    // update book with new data 
+    const deleteBook = await Book.findByIdAndDelete(bookId);
+
+    // response
+    res.status(200).json({
+      success: true,
+      message: "Book deleted successfully",
+      data: null
     });
 
   } catch (error: any) {

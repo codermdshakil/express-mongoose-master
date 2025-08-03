@@ -1,5 +1,5 @@
 
-export interface IUser{
+export interface IBook{
   title:string,
   author:string,
   genre:"FICTION" | "NON-FICTION" | "SCIENCE" | "HISTORY" | "BIOGRAPHY" | "FANTASY",
