@@ -55,7 +55,6 @@ bookRouter.get("/books/:bookId", async (req: Request, res: Response) => {
       message: "Book retrieved successfully",
       data: book,
     });
-
   } catch (error: any) {
     res.status(400).json({
       success: false,
@@ -63,8 +62,40 @@ bookRouter.get("/books/:bookId", async (req: Request, res: Response) => {
       error,
     });
   }
-
-  res.send(bookId);
 });
+
+// 4. update book by its id
+bookRouter.patch("/books/:bookId", async (req: Request, res: Response) => {
+  
+
+  // get book id
+  const bookId = req.params.bookId;
+
+  try {
+
+    // update book with new data 
+    const updatedBook = await Book.findByIdAndUpdate(bookId, req.body, {
+      new: true,
+    });
+
+    // response
+    res.status(200).json({
+      success: true,
+      message: "Book updated successfully",
+      data: updatedBook,
+    });
+
+  } catch (error: any) {
+  
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      error,
+    });
+  }
+});
+
+
+
 
 export default bookRouter;
