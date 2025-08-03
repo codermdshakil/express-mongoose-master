@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { SortOrder } from "mongoose";
 import z from "zod";
 import { Book } from "../models/book.model";
 
@@ -42,7 +43,47 @@ bookRouter.post("/books", async (req: Request, res: Response) => {
 
 // 2. get all books
 
+bookRouter.get("/books", async (req: Request, res: Response) => {
+  
+  //get query values
+  const { filter, sortBy, sort, limit} = req.query;
 
+  // filter condition
+  const condition = filter ? { genre: filter } : {};
+
+  // flag
+  const flagOrder: SortOrder =
+    sort === "asc" || sort === "ASC" || sort === "1" ? 1 : -1;
+
+
+  // sort condition based on flag and filer condition
+  const sortCondition: { [key: string]: SortOrder } = {
+    [sortBy as string]: flagOrder,
+  };
+
+  // LimitNumber condition
+  const limitNumber = limit ? parseInt(limit as string) : 10;
+
+  try {
+
+    
+    const data = await Book.find(condition).sort(sortCondition).limit(limitNumber);
+
+    // responses
+    res.status(200).json({
+      success: true,
+      message: "Books retrieved successfully",
+      data: data,
+    });
+
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      error,
+    });
+  }
+});
 
 // 3. get book by id
 bookRouter.get("/books/:bookId", async (req: Request, res: Response) => {
@@ -68,14 +109,11 @@ bookRouter.get("/books/:bookId", async (req: Request, res: Response) => {
 
 // 4. update book by its id
 bookRouter.patch("/books/:bookId", async (req: Request, res: Response) => {
-  
-
   // get book id
   const bookId = req.params.bookId;
 
   try {
-
-    // update book with new data 
+    // update book with new data
     const updatedBook = await Book.findByIdAndUpdate(bookId, req.body, {
       new: true,
     });
@@ -86,9 +124,7 @@ bookRouter.patch("/books/:bookId", async (req: Request, res: Response) => {
       message: "Book updated successfully",
       data: updatedBook,
     });
-
   } catch (error: any) {
-  
     res.status(400).json({
       success: false,
       message: error.message,
@@ -99,25 +135,20 @@ bookRouter.patch("/books/:bookId", async (req: Request, res: Response) => {
 
 // 4. delete book by its id
 bookRouter.delete("/books/:bookId", async (req: Request, res: Response) => {
-  
-
   // get book id
   const bookId = req.params.bookId;
 
   try {
-
-    // update book with new data 
+    // update book with new data
     const deleteBook = await Book.findByIdAndDelete(bookId);
 
     // response
     res.status(200).json({
       success: true,
       message: "Book deleted successfully",
-      data: null
+      data: null,
     });
-
   } catch (error: any) {
-  
     res.status(400).json({
       success: false,
       message: error.message,
@@ -125,8 +156,5 @@ bookRouter.delete("/books/:bookId", async (req: Request, res: Response) => {
     });
   }
 });
-
-
-
 
 export default bookRouter;
