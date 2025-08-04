@@ -1,3 +1,4 @@
+import { Model } from "mongoose";
 
 export interface IBook{
   title:string,
@@ -10,3 +11,8 @@ export interface IBook{
 };
 
 
+// Custom User Static Methods
+
+export interface UserStaticMethods  extends Model<IBook>{
+  checkAvailableCopies(copies:number):number;
+}

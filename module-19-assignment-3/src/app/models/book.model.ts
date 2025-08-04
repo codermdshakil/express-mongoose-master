@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { IBook } from "../interface/book.interface";
+import { IBook, UserStaticMethods } from "../interface/book.interface";
 
-const bookSchema = new Schema<IBook>(
+const bookSchema = new Schema<IBook, UserStaticMethods>(
   {
     title: {
       type: String,
@@ -57,4 +57,11 @@ const bookSchema = new Schema<IBook>(
   }
 );
 
-export const Book = model("Book", bookSchema);
+export const Book = model<IBook, UserStaticMethods>("Book", bookSchema);
+
+bookSchema.static(
+  "checkAvailableCopies",
+  async function checkAvailableCopies(copies: number) { 
+    return copies;
+  }
+);

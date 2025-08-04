@@ -6,6 +6,7 @@ app.use(express.json());
 
 app.use("/api", bookRouter);
 
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello world");
 });
@@ -22,8 +23,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // global error handler
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   if (error) {
-    console.log("Error", error);
-    res.status(400).json({ message: "Something want wrong!" });
+    res.status(400).json({ message: "Something want wrong!", error:error });
   }
 });
 
