@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { IBook, UserStaticMethods } from "../interface/book.interface";
+import { IBook, UserStaticMethod } from "../interface/book.interface";
 
-const bookSchema = new Schema<IBook, UserStaticMethods>(
+const bookSchema = new Schema<IBook>(
   {
     title: {
       type: String,
@@ -57,11 +57,16 @@ const bookSchema = new Schema<IBook, UserStaticMethods>(
   }
 );
 
-export const Book = model<IBook, UserStaticMethods>("Book", bookSchema);
-
+// using static method make available false if copies === 0
 bookSchema.static(
-  "checkAvailableCopies",
-  async function checkAvailableCopies(copies: number) { 
-    return copies;
+  "makeAvailableFalse",
+  async function makeAvailableFalse(book: IBook) { 
+    book.available =false;
   }
 );
+
+
+
+export const Book = model<IBook, UserStaticMethod>("Book", bookSchema);
+
+ 
