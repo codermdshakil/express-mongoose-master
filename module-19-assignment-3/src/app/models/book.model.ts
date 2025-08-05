@@ -38,7 +38,7 @@ const bookSchema = new Schema<IBook>(
     copies: {
       type: Number,
       required: true,
-       min: [0, "Copies must be a positive number"], 
+      min: [0, "Copies must be a positive number"],
       validate: {
         validator: function (value: number) {
           return value >= 0;
@@ -60,13 +60,10 @@ const bookSchema = new Schema<IBook>(
 // using static method make available false if copies === 0
 bookSchema.static(
   "makeAvailableFalse",
-  async function makeAvailableFalse(book: IBook) { 
-    book.available =false;
+  async function makeAvailableFalse(book: IBook) {
+    book.available = false;
   }
 );
 
 
-
 export const Book = model<IBook, UserStaticMethod>("Book", bookSchema);
-
- 

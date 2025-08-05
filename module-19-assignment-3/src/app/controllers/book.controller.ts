@@ -163,11 +163,9 @@ const borrowBookZodValidation = z.object({
   dueDate: z.string(),
 });
 
-
+// create borrow book
 bookRouter.post("/borrow", async (req: Request, res: Response) => {
-  
   try {
-
     // zod Validation
     const zodBody = borrowBookZodValidation.parse(req.body);
     const { book, quantity, dueDate } = zodBody;
@@ -212,16 +210,65 @@ bookRouter.post("/borrow", async (req: Request, res: Response) => {
       message: "Book borrowed successfully",
       data: borrowBook,
     });
-
   } catch (error: any) {
-
     return res.status(400).json({
       success: false,
       message: "Borrowing Failed",
       error: error.message || error,
     });
-
   }
+});
+
+// borrowed book summary
+bookRouter.get("/borrow", async (req: Request, res: Response) => {
+  try {
+    const result = await BorrowBook.aggregate([
+      {
+        // group borrowedBook using book ID
+        $group: {
+          _id: "$book",
+          totalQuantity: { $sum: "$quantity" },
+        },
+      },
+      {
+        // get book using book _id from books collection ans save as bookInfo 
+        $lookup: {
+          from: "books",
+          localField: "_id",
+          foreignField: "_id",
+          as: "bookInfo",
+        },
+      },
+      // convert array of object to object
+      { $unwind: "$bookInfo" },
+      {
+        // show using this format 
+        $project: {
+          _id: 0, // 0 means remove it 
+          totalQuantity: 1, // 1 means keep it 
+          book: {
+            title: "$bookInfo.title",
+            isbn: "$bookInfo.isbn",
+          },
+        },
+      },
+    ]);
+    
+
+    res.status(200).json({
+      success: true,
+      message: "Borrowed books summary retrieved successfully",
+      data: result,
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch borrowed books summary",
+      error: error.message,
+    });
+  }
+
 });
 
 export default bookRouter;

@@ -1,10 +1,11 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { IBorrowBook } from "../interface/borrow_book.interface";
 
 const borrowBookSchema = new Schema<IBorrowBook>(
   {
     book: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
       required: true,
     },
     quantity: {
@@ -21,5 +22,7 @@ const borrowBookSchema = new Schema<IBorrowBook>(
     versionKey: false,
   }
 );
+
+
 
 export const BorrowBook = model("BorrowBook", borrowBookSchema);
