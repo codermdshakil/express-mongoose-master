@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { SortOrder } from "mongoose";
 import z from "zod";
 import { Book } from "../models/book.model";
+import { BorrowBook } from "../models/borrow_book.model";
 
 // book router
 const bookRouter = express.Router();
@@ -154,62 +155,73 @@ bookRouter.delete("/books/:bookId", async (req: Request, res: Response) => {
 });
 
 // Borrow book section here
+
+// Zod validation for Borrow Book
+const borrowBookZodValidation = z.object({
+  book: z.string(),
+  quantity: z.number(),
+  dueDate: z.string(),
+});
+
+
 bookRouter.post("/borrow", async (req: Request, res: Response) => {
-  const { book, quantity, dueDate } = req.body;
+  
+  try {
 
-  console.log(req.body);
+    // zod Validation
+    const zodBody = borrowBookZodValidation.parse(req.body);
+    const { book, quantity, dueDate } = zodBody;
 
-  // find book using book
-  const findedBook = await Book.findById(book);
-  console.log(findedBook, 'findedBook');
-
-  // check book copies are equal and greater then quantity
-  if (!findedBook) {
-    res.status(404).json({
-      message: "Book Not Found",
-    });
-  }
-
-  if (findedBook) {
-
-    if(findedBook.copies >= quantity){
-
-      // reduce copies from total quantity
-      findedBook.copies -= quantity;
-
-      // save book 
-      findedBook.save();
-
-
-      
-
-    }
-    else{
-      res.status(400).json({
-        message:"Not Enough Copies!!"
-      })
+    // find book
+    const findedBook = await Book.findById(book);
+    if (!findedBook) {
+      return res.status(404).json({
+        success: false,
+        message: "Book Not Found",
+      });
     }
 
+    // is available
+    if (findedBook.copies < quantity) {
+      return res.status(400).json({
+        success: false,
+        message: "Not Enough Copies!!",
+      });
+    }
+
+    // reduce copies
+    findedBook.copies -= quantity;
+
+    // If copies 0 then make available false
     if (findedBook.copies === 0) {
       await Book.makeAvailableFalse(findedBook);
-
-      // save book 
-      findedBook.save();
     }
 
-    
+    // save book
+    await findedBook.save();
+
+    // create borrow book
+    const borrowBook = await BorrowBook.create({
+      book: findedBook._id,
+      quantity,
+      dueDate,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Book borrowed successfully",
+      data: borrowBook,
+    });
+
+  } catch (error: any) {
+
+    return res.status(400).json({
+      success: false,
+      message: "Borrowing Failed",
+      error: error.message || error,
+    });
 
   }
-
-  // 1. id
-  // 2. using id find Book
-  // 3.
-
-  res.send("Hello world");
 });
 
 export default bookRouter;
-
-// if(findedBook.copies === 0 ){
-//   findedBook.available = false; // do it using static
-// }
