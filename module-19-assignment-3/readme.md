@@ -43,11 +43,17 @@ cd express-mongoose-master/module-19-assignment-3
 ```bash
 npm install
 ```
+
+## Credensials
+```bash
+MONGODB_URI=mongodb+srv://mongodb:mongodb@cluster0.qo2wzoe.mongodb.net/todosDB?retryWrites=true&w=majority&appName=Cluster0
+PORT=5000
+Server will run on PORT: http://localhost:5000/
+```
+
 4. **Start Server**
 ```bash
 npm run dev
-
-Server will run on PORT: http://localhost:5000/
 ```
 
 
