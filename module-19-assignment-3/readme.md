@@ -39,4 +39,58 @@ git clone https://github.com/codermdshakil/express-mongoose-master.git
 cd express-mongoose-master/module-19-assignment-3
 ```
 
+3. **Install dependencies**
+```bash
+npm install
+```
+4. **Start Server**
+```bash
+npm run dev
 
+Server will run on PORT: http://localhost:5000/
+```
+
+
+
+## API Endpoints
+
+### Books
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| POST | `/api/books` | Create a new book |
+| GET | `/api/books` | Get list of books with filtering, sorting, limit (query params) |
+| GET | `/api/books/:bookId` | Get book by ID |
+| PATCH | `/api/books/:bookId` | Update book details |
+| DELETE | `/api/books/:bookId` | Delete a book |
+
+### Query Parameters for GET /api/books
+
+- `filter`: Filter by genre (e.g., `SCIENCE`, `FANTASY`)
+- `sortBy`: Field to sort by (default: `createdAt`)
+- `sort`: `asc` or `desc` (default: `asc`)
+- `limit`: Number of results to return (default: 10)
+
+---
+
+### Borrowing
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| POST | `/api/borrow` | Borrow a book (with business logic enforcement) |
+| GET | `/api/borrow` | Get borrowed books summary with total quantity and book details (aggregation) |
+
+
+
+## Live Demo
+
+[🔗 Live API Link](https://your-deployed-url.com)
+
+## Video Walkthrough
+
+[🎥 Watch Video Demo](https://your-public-video-link.com)
+
+## 🙏 Acknowledgments
+
+- Instructor: Rabi Bhai
+- Senior Mentor Programming Hero
