@@ -24,5 +24,10 @@ const borrowBookSchema = new Schema<IBorrowBook>(
 );
 
 
+// after borrowing a Book 
+borrowBookSchema.post("save", async function(doc) {
+  console.log(`Book borrowed: ${doc.book} quantity: ${doc.quantity}`);
+});
+
 
 export const BorrowBook = model("BorrowBook", borrowBookSchema);

@@ -66,4 +66,20 @@ bookSchema.static(
 );
 
 
+// implement pre save hook
+bookSchema.pre("save", function (next) {
+  if (this.copies < 0) {
+    console.log('Copies must be Non-negative Integer Number!');
+    return next(new Error("Copies must be non-negative"));
+  }
+  next();
+});
+
+// post save hook
+bookSchema.post("save", function(doc) {
+  console.log(`Book titled '${doc.title}' Successfully Created!`);
+});
+
+
+
 export const Book = model<IBook, UserStaticMethod>("Book", bookSchema);
