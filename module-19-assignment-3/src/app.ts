@@ -1,8 +1,16 @@
+import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import bookRouter from "./app/controllers/book.controller";
 
+
 const app: Application = express();
 app.use(express.json());
+// Allow requests from your frontend
+app.use(cors({
+  origin: "http://localhost:5173",   // allow only frontend
+  credentials: true
+}));
+
 
 app.use("/api", bookRouter);
 
