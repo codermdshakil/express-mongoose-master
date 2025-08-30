@@ -33,6 +33,7 @@ bookRouter.post("/books", async (req: Request, res: Response) => {
       message: "Book created successfully",
       data: data,
     });
+
   } catch (error: any) {
     res.status(400).json({
       success: false,
@@ -60,12 +61,12 @@ bookRouter.get("/books", async (req: Request, res: Response) => {
   };
 
   // LimitNumber condition
-  const limitNumber = limit ? parseInt(limit as string) : 10;
+  // const limitNumber = limit ? parseInt(limit as string) : 10;
 
   try {
     const data = await Book.find(condition)
       .sort(sortCondition)
-      .limit(limitNumber);
+      // .limit(limitNumber);
 
     // responses
     res.status(200).json({
@@ -143,8 +144,9 @@ bookRouter.delete("/books/:bookId", async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "Book deleted successfully",
-      data: null,
+      data: deleteBook,
     });
+    
   } catch (error: any) {
     res.status(400).json({
       success: false,
@@ -210,6 +212,7 @@ bookRouter.post("/borrow", async (req: Request, res: Response) => {
       message: "Book borrowed successfully",
       data: borrowBook,
     });
+    
   } catch (error: any) {
     return res.status(400).json({
       success: false,
